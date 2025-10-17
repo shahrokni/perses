@@ -56,8 +56,14 @@ export function Row({
   const ResponsiveGridLayout = useMemo(() => WidthProvider(Responsive), []);
   const theme = useTheme();
   const viewPanelItemId = useViewPanelGroup();
-
   const [isOpen, setIsOpen] = useState(!groupDefinition.isCollapsed);
+
+  /* The width value should be rounded to get the consistent width regardless of the scrollbar existence  
+     Example:
+     Without scrollbar 73.783203125
+     With scrollbar 74.41666666666667
+  */
+  const roundedGridColWidth = Math.round(gridColWidth);
 
   const hasViewPanel =
     viewPanelItemId?.panelGroupId === panelGroupId &&
@@ -143,7 +149,7 @@ export function Row({
                 <GridItemContent
                   panelOptions={panelOptions}
                   panelGroupItemId={{ panelGroupId, panelGroupItemLayoutId: i, repeatVariable }}
-                  width={calculateGridItemWidth(w, gridColWidth)}
+                  width={calculateGridItemWidth(w, roundedGridColWidth)}
                 />
               </ErrorBoundary>
             </div>

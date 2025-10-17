@@ -67,15 +67,19 @@ export function DataQueriesProvider(props: DataQueriesProviderProps): ReactEleme
   // Returns a query kind, for example "TimeSeriesQuery" = getQueryType("PrometheusTimeSeriesQuery")
   const getQueryType = useQueryType();
 
-  const queryDefinitions = definitions.map((definition) => {
-    const type = getQueryType(definition.kind);
-    return {
-      kind: type,
-      spec: {
-        plugin: definition,
-      },
-    };
-  });
+  const queryDefinitions = useMemo(
+    () =>
+      definitions.map((definition) => {
+        const type = getQueryType(definition.kind);
+        return {
+          kind: type,
+          spec: {
+            plugin: definition,
+          },
+        };
+      }),
+    [definitions, getQueryType]
+  );
 
   const usageMetrics = useUsageMetrics();
 
